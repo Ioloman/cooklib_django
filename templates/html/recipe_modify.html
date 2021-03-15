@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<link rel="stylesheet" href="{% static '/css/managing.css' %}">{% endblock %}
+
+{% block title %}Повареная книга - Изменить рецепт - {{ recipe.dish_name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="tab-content">
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% load widget_tweaks %}
+                <div class="row">
+                    <div class="col">
+                        {% render_field form.dish_name class+='form-control' placeholder+='Название рецепта' %}
+                    </div>
+                    <div class="col">
+                        {% render_field form.cooking_time class+='form-control' placeholder+='Время готовки, min' %}
+                    </div>
+                    <div class="col">
+                        {% render_field form.description class+='form-control' placeholder+='Краткое описание' %}
+                    </div>
+                    <div class="col">
+                    <input type="file" name="image" class="form-control-file" id="id_image" accept="image/*">
+                        {% if recipe.image %}
+                            <label>Текущее изображение: </label>
+                            <a href="{{ recipe.image.url }}" target="_blank">Ссылка</a><br>
+                            <input type="checkbox" name="image-clear" id="image-clear_id">
+                            <label for="image-clear_id">Очистить</label>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="container">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Ингредиент</th>
+                            <th scope="col">Количество</th>
+                            <th scope="col">Единица измерения</th>
+                            <th scope="col">
+                                <button type="button" class="btn btn-success">Добавить</button>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ingredient in ingredients %}
+                            <input type="hidden" value="{{ ingredient.id }}" name="ingredient_id"/>
+                            <tr>
+                                <td>
+                                    <select class="custom-select" name="ingredient_name">
+                                        {% for ingr in all_ingredients %}
+                                            <option value="{{ ingr.id }}" {% if ingredient.ingredient.id == ingr.id %}selected{% endif %}>{{ ingr.ingredient_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input value="{{ ingredient.amount }}" class="form-control" name="amount"
+                                           type="text">
+                                </td>
+                                <td>
+                                    <input value="{{ ingredient.measurement }}" class="form-control" name="measurement"
+                                           type="text">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger">Удалить</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Заголовок</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Фото</th>
+                            <th scope="col">
+                                <button type="button" class="btn btn-success">Добавить</button>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for step in steps %}
+                            <input type="hidden" name="order_number" value="{{ step.order_number }}"/>
+                            <tr>
+                                <td class="block">
+                                    <input value="{{ step.title }}" class="form-control"
+                                           name="title" type="text">
+                                </td>
+                                <td>
+                                    <textarea class="form-control"
+                                              name="step_description" rows="2">{{ step.discription }}</textarea>
+                                </td>
+                                <td>
+                                    <input type="file" name="step_image_{{ step.order_number }}" class="form-control-file" id="id_step_image" accept="image/*">
+                                    {% if step.image %}
+                                        <label>Текущее изображение: </label>
+                                        <a href="{{ step.image.url }}" target="_blank">Ссылка</a><br>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger">Удалить</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                <button type="submit" formaction=""
+                        class="btn btn-success col-5">Сохранить
+                </button>
+                <button type="submit" formaction="{% url 'recipe_delete' id=recipe.id %}"
+                        class="btn btn-danger">Удалить рецепт
+                </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

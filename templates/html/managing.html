@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<link rel="stylesheet" href="{% static '/css/managing.css' %}">{% endblock %}
+{% block title %}Повареная книга - Управление{% endblock %}
+
+{% block content %}
+<div class="container">
+    <ul class="nav nav-tabs mt-2">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#create-recipe">Новый рецепт</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#create-product">Добавить продукт</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+               aria-expanded="false">Редактировать рецепт</a>
+            <div class="dropdown-menu">
+                {% for recipe in recipes %}
+                    <a class="dropdown-item" type="submit"
+                       href="{% url 'recipe_edit' id=recipe.id %}">{{ recipe.dish_name }}</a>
+                {% endfor %}
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+               aria-expanded="false">Редактировать ингредиент</a>
+            <div class="dropdown-menu">
+                {% for ingredient in ingredients %}
+                    <a class="dropdown-item"
+                       href="{% url 'ingredient_edit' id=ingredient.id %}">{{ ingredient.ingredient_name }}</a>
+                {% endfor %}
+            </div>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade active show" id="create-recipe">
+            <div class="container">
+                <form method="post" action="{% url 'recipes' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" name="dish_name" class="form-control" placeholder="Название рецепта">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="cooking_time"
+                                   placeholder="Время готовки, min">
+                        </div>
+                        <div class="col">
+                            <input type="text" name="description" class="form-control" placeholder="Краткое описание">
+                        </div>
+                        <div class="col">
+                            <input type="file" name="recipe_image" class="form-control-file" id="exampleFormControlFile1">
+                        </div>
+                    </div>
+                    <div class="container">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Ингредиент</th>
+                                <th scope="col">Количество</th>
+                                <th scope="col">Единица измерения</th>
+                                <th scope="col">
+                                    <button type="button" class="btn btn-success">Добавить</button>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in "1234" %}
+                                <tr>
+                                    <td class="block">
+                                        <select class="custom-select" name="ingredient_name">
+                                            <option selected value="-1">Выберите...</option>
+                                            {% for ingr in ingredients %}
+                                                <option value="{{ ingr.id }}">{{ ingr.ingredient_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" name="amount" type="text">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" name="measurement" type="text">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger">Удалить</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Заголовок</th>
+                                <th scope="col">Описание</th>
+                                <th scope="col">Фото</th>
+                                <th scope="col">
+                                    <button type="button" class="btn btn-success">Добавить</button>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in "123" %}
+                                <input type="hidden" name="order_number" value="{{ i }}"/>
+                                <tr>
+                                    <td class="block">
+                                        <input class="form-control" name="title" type="text">
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control" name="step_description" id="exampleFormControlTextarea1"
+                                                  rows="2"></textarea>
+                                    </td>
+                                    <td>
+                                        <input type="file" class="form-control-file" name="step_image_{{ i }}"
+                                               id="exampleFormControlFile1" accept="image/*">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger">Удалить</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="create-product">
+            <div class="container">
+                <form method="post" action="{% url 'ingredient_create' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Название продукта</label>
+                        <input type="text" name="ingredient_name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Калорийность</label>
+                        <input type="text" name="calories_per_serving" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Фото</label>
+                        <input type="file" name="image" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

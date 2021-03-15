@@ -1,0 +1,94 @@
+.container-header {
+    margin-bottom: .5rem;
+    background-color: #daeeff;
+    border-radius: .25rem;
+}
+
+.container-sidebar {
+    float: right;
+    width: 4.5em;
+    height: 8rem;
+}
+
+.container-body {
+    margin-right: 5rem;
+}
+
+.navbar-brand img {
+    height: 35px;
+}
+
+#topbar {
+    margin-top: -11px;
+    margin-bottom: -11px;
+    overflow:auto;
+    background-color: #313131 !important;
+}
+
+body {
+    background: url(../img/recipes-background.jpg);
+    height: 500px !important;
+
+}
+
+.container {
+    text-align: left;
+    margin: -15px !important;
+    height: 222px;
+}
+
+@media (max-width: 474px) {
+    .display-4 {
+        font-size: 200%;
+    }
+
+    .form-control {
+        margin-right: -14px;
+        width: 75px !important;
+    }
+
+    .jumbotron {
+        background-position: top -50px left -400px;
+    }
+
+    .container-fluid {
+        padding: 0;
+    }
+
+    .navbar-brand {
+        margin-left: -14px;
+    }
+
+    .btn-authorize > .btn {
+        margin-right: -7px !important;
+    }
+}
+
+svg {
+    width: 32px;
+    color: #313131;
+}
+
+.p-3 {
+    background-color: #e0e0e0;
+}
+
+.btn-authorize > .btn {
+    margin-right: 7px;
+}
+
+.card-img-top {
+    border-radius: 0px !important;
+}
+
+.card {
+    background: #e0e0e0;
+}
+
+.table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background: rgba(204, 204, 204, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: 7px;
+}

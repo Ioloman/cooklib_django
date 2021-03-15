@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static '/css/managing.css' %}">{% endblock %}
+
+{% block title %}Повареная книга - Изменить ингридеинт - {{ ingredient.ingredient_name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% load widget_tweaks %}
+        <div class="form-group">
+            <label for="id_ingredient_name">Название ингредиента</label>
+            {% render_field form.ingredient_name class+='form-control' %}
+        </div>
+        <div class="form-group">
+            <label for="id_calories_per_serving">Калорийность</label>
+            {% render_field form.calories_per_serving class+='form-control' %}
+        </div>
+        {% if ingredient.image %}
+        <div class="form-group">
+            <label>Текущее изображение: </label>
+            <a href="{{ ingredient.image.url }}" target="_blank">Ссылка</a><br>
+            <input type="checkbox" name="image-clear" id="image-clear_id">
+            <label for="image-clear_id">Очистить</label>
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <input type="file" name="image" class="form-control-file" id="id_image" accept="image/*">
+        </div>
+        <button type="submit" formaction=""
+                class="btn btn-success col-5">Сохранить
+        </button>
+        <button type="submit" formaction="{% url 'ingredient_delete' id=ingredient.id %}"
+                class="btn btn-danger">Удалить ингрединет
+        </button>
+    </form>
+</div>
+{% endblock %}

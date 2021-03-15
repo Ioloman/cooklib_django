@@ -1,0 +1,16 @@
+POST http://localhost:8000/recipe/?name=LOL
+Accept: */*
+Cache-Control: no-cache
+
+<> 2021-03-15T100006.403.html
+
+###
+
+POST http://localhost:8000/recipe?name=LOL
+Accept: */*
+Cache-Control: no-cache
+
+<> 2021-03-15T095834.500.html
+
+###
+
